@@ -17,12 +17,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * Hello world!
  *
  */
-public class App 
+public class DynamicElement 
 {
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        String url="https://practicetestautomation.com/practice-test-login/";
+        String url="https://the-internet.herokuapp.com/dynamic_loading";
         
             System.setProperty(
                 "webdriver.chrome.driver",
@@ -37,21 +37,20 @@ public class App
             // Launching website
             driver.get(url);
             
-         // Print the page title
-            System.out.println("Page title is: " + driver.getTitle());
-        
-            // login page selectors
-            driver.findElement(By.xpath("//input[@id='username']")).sendKeys("student");
+            driver.findElement(By.cssSelector("a[href='/dynamic_loading/2']")).click();
             
-            driver.findElement(By.xpath("//input[@id='password']")).sendKeys("Password123");
-            
+            // wait and click on start button
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[id='start'] button")));
+            element.click();
           
-            driver.findElement(By.xpath("//button[@id='submit']")).click(); 
+    
+            // wait for hello world text
+            WebDriverWait w = new WebDriverWait(driver, 5);
+            WebElement helloText = w.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[id='finish'] h4")));
             
-         
-            // logout 
-            driver.findElement(By.xpath("//a[contains(.,'Log out')]")).click(); 
-            
+            // verify the text is as expected
+            Assert.assertEquals("Hello World!", helloText.getText());
             driver.quit();
     }
 
