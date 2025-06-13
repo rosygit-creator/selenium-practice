@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Tabswitch 
+public class Alert1 
 {
     public static void main( String[] args )
     {
@@ -35,21 +36,24 @@ public class Tabswitch
             // Launching website
             driver.get(url);
          
-            // get table headers
-//            List<WebElement> headers=driver.findElements(By.xpath("//table[@name='courses']/tbody/tr/th"));
-            String parentWindow=driver.getWindowHandle();
+            // add value to textbox
+            driver.findElement(By.xpath("//input[@id='name']")).sendKeys("name");
             
+            // click alert
+            driver.findElement(By.cssSelector("#alertbtn")).click();
             
-            driver.findElement(By.xpath("//a[@id='opentab']")).click();
-            Set<String> childWindows=driver.getWindowHandles();
+            // switch to alert window
+            String alertText=driver.switchTo().alert().getText();
             
-            for(String w:childWindows) {
-            	if(!(parentWindow==w))
-            		 driver.switchTo().window(w);
-            	//System.out.println(driver.getTitle());
-            }
+            Assert.assertTrue(alertText.contains("Hello"));
+            
+            // click ok button
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+            
            
-           Assert.assertTrue(driver.getTitle().contains("QAClick Academy"));
+           
+           
            driver.quit();
     }
 	
