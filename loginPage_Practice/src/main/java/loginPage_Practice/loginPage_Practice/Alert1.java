@@ -3,9 +3,11 @@ package loginPage_Practice.loginPage_Practice;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.WebDriver;
@@ -14,7 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Table1 
+public class Alert1 
 {
     public static void main( String[] args )
     {
@@ -34,22 +36,25 @@ public class Table1
             // Launching website
             driver.get(url);
          
-            // get table headers
-            List<WebElement> headers=driver.findElements(By.xpath("//table[@name='courses']/tbody/tr/th"));
+            // add value to textbox
+            driver.findElement(By.xpath("//input[@id='name']")).sendKeys("name");
             
+            // click alert
+            driver.findElement(By.cssSelector("#alertbtn")).click();
             
-            Assert.assertEquals(3, headers.size());
-           Assert.assertEquals(headers.get(0).getText(), "Instructor");
-           Assert.assertEquals(headers.get(1).getText(), "Course");
-           Assert.assertEquals(headers.get(2).getText(), "Price");
-          
-  // verify column value
+            // switch to alert window
+            String alertText=driver.switchTo().alert().getText();
+            
+            Assert.assertTrue(alertText.contains("Hello"));
+            
+            // click ok button
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+            
            
-          WebElement column= driver.findElement(By.xpath("//table[@name='courses']/tbody/tr[6]/td[2]"));
-
-          Assert.assertTrue(column.getText().contains("JMETER"));
-  
-            driver.quit();
+           
+           
+           driver.quit();
     }
 	
 	}

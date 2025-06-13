@@ -3,6 +3,7 @@ package loginPage_Practice.loginPage_Practice;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -14,7 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Table1 
+public class Tabswitch 
 {
     public static void main( String[] args )
     {
@@ -35,21 +36,21 @@ public class Table1
             driver.get(url);
          
             // get table headers
-            List<WebElement> headers=driver.findElements(By.xpath("//table[@name='courses']/tbody/tr/th"));
+//            List<WebElement> headers=driver.findElements(By.xpath("//table[@name='courses']/tbody/tr/th"));
+            String parentWindow=driver.getWindowHandle();
             
             
-            Assert.assertEquals(3, headers.size());
-           Assert.assertEquals(headers.get(0).getText(), "Instructor");
-           Assert.assertEquals(headers.get(1).getText(), "Course");
-           Assert.assertEquals(headers.get(2).getText(), "Price");
-          
-  // verify column value
+            driver.findElement(By.xpath("//a[@id='opentab']")).click();
+            Set<String> childWindows=driver.getWindowHandles();
+            
+            for(String w:childWindows) {
+            	if(!(parentWindow==w))
+            		 driver.switchTo().window(w);
+            	//System.out.println(driver.getTitle());
+            }
            
-          WebElement column= driver.findElement(By.xpath("//table[@name='courses']/tbody/tr[6]/td[2]"));
-
-          Assert.assertTrue(column.getText().contains("JMETER"));
-  
-            driver.quit();
+           Assert.assertTrue(driver.getTitle().contains("QAClick Academy"));
+           driver.quit();
     }
 	
 	}
