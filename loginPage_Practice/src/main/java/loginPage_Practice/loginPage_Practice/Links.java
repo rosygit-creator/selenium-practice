@@ -35,27 +35,30 @@ public class Links
             // Launching website
             driver.get(url);
            String pageTitle= driver.getTitle();
-           System.out.println("main page "+ pageTitle);
+           System.out.println("main page @@  "+ pageTitle);
            String parentWindow=driver.getWindowHandle();
            
             // get all links
-            List<WebElement> links=driver.findElements(By.tagName("a"));
+            List<WebElement> links=driver.findElements(By.cssSelector("#content ul a"));
             System.out.println(links.size());
             
             for(WebElement link: links) {
             		String href=link.getAttribute("href");
-//            		 System.out.println(href);
+            		
+            		 System.out.println(href);
             		driver.get(href);
             		String childWindow=driver.getWindowHandle();
             		driver.switchTo().window(childWindow);
             		String childTitle=driver.getTitle();
-            		 System.out.println("child title" + childTitle);
+            		 System.out.println("child title @@  " + childTitle);
             		 try {
-						Thread.sleep(1000);
+						Thread.sleep(5000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+            		 if(pageTitle==childTitle)
+            			 System.out.println("true");
             		 driver.switchTo().window(parentWindow);
             		
             }
